@@ -15,7 +15,7 @@ public class DataLoader implements CommandLineRunner {
   }
 
   @Override
-  public void run(String... args) throws Exception {
+  public void run(String... args) {
 
     postRepository.save(Post.builder()
         .title("First Blog Post")
