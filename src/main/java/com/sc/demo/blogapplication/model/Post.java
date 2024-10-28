@@ -7,7 +7,8 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Lob;
 import jakarta.validation.constraints.NotEmpty;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -27,8 +28,10 @@ public class Post {
   @NotEmpty
   private String title;
   @Lob
+  @NotEmpty
   private String content;
 
   @ElementCollection
-  private List<String> tags;
+  @Builder.Default
+  private Set<String> tags = new HashSet<>();
 }
