@@ -14,25 +14,20 @@ import com.sc.demo.blogapplication.model.Post;
 import com.sc.demo.blogapplication.repository.PostRepository;
 import java.util.List;
 import java.util.Optional;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.junit.jupiter.MockitoExtension;
 
+@ExtendWith(MockitoExtension.class)
 class PostServiceTest {
-
 
   @Mock
   private PostRepository postRepository;
 
   @InjectMocks
   private PostService postService;
-
-  @BeforeEach
-  void setUp() {
-    MockitoAnnotations.openMocks(this);
-  }
 
   @Test
   void createPostSuccessfully() {
@@ -47,12 +42,14 @@ class PostServiceTest {
 
   @Test
   void getAllBlogPostsSuccessfully() {
-    List<Post> posts = List.of(new Post(), new Post());
+    List<Post> posts = List.of(Post.builder().title("title").content("content").build(),
+        Post.builder().title("title1").content("content1").build());
     when(postRepository.findAll()).thenReturn(posts);
 
-    List<Post> result = postService.getAllBlogPosts();
+    List<PostDTO> result = postService.getAllBlogPosts();
 
-    assertEquals(posts, result);
+    assertEquals(posts.get(0).getContent(), result.get(0).content());
+    assertEquals(posts.get(1).getContent(), result.get(1).content());
     verify(postRepository, times(1)).findAll();
   }
 

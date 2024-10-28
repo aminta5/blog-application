@@ -21,8 +21,12 @@ public class PostService {
     return postRepository.save(post);
   }
 
-  public List<Post> getAllBlogPosts() {
-    return postRepository.findAll();
+  public List<PostDTO> getAllBlogPosts() {
+    return postRepository.findAll().stream().map(post -> {
+      String summary = post.getContent().length() > 50 ? post.getContent().substring(0, 50) + "..."
+          : post.getContent();
+      return new PostDTO(post.getTitle(), summary);
+    }).toList();
   }
 
 

@@ -60,7 +60,7 @@ class PostControllerTest {
 
   @Test
   void testGetAllPostsSuccess() throws Exception {
-    List<Post> posts = List.of(Post.builder().title("title").content("content").build());
+    List<PostDTO> posts = List.of(new PostDTO("title", "content"));
     given(postService.getAllBlogPosts()).willReturn(posts);
     mockMvc.perform(get("/api/v1/posts")
             .contentType(MediaType.APPLICATION_JSON))

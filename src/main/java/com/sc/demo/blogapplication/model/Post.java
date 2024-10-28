@@ -25,10 +25,10 @@ public class Post {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @NotEmpty
+  @NotEmpty(message = "Title cannot be empty")
   private String title;
   @Lob
-  @NotEmpty
+  @NotEmpty(message = "Content cannot be empty")
   private String content;
 
   @ElementCollection
