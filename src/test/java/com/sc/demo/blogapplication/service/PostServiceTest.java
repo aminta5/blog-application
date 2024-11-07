@@ -19,6 +19,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.jpa.domain.Specification;
 
 @ExtendWith(MockitoExtension.class)
 class PostServiceTest {
@@ -89,6 +90,7 @@ class PostServiceTest {
     String tag = "tag";
     Post post = new Post();
     when(postRepository.findById(id)).thenReturn(Optional.of(post));
+    when(postRepository.save(post)).thenReturn(post);
 
     Optional<Post> result = postService.addTagToPost(id, tag);
 
@@ -116,6 +118,7 @@ class PostServiceTest {
     Post post = new Post();
     post.getTags().add(tag);
     when(postRepository.findById(id)).thenReturn(Optional.of(post));
+    when(postRepository.save(post)).thenReturn(post);
 
     Optional<Post> result = postService.removeTagFromPost(id, tag);
 
@@ -137,15 +140,16 @@ class PostServiceTest {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   void getAllPostsByTagSuccessfully() {
     String tag = "tag";
     List<Post> posts = List.of(new Post(), new Post());
-    when(postRepository.findAllByTag(tag)).thenReturn(posts);
+    when(postRepository.findAll(any(Specification.class))).thenReturn(posts);
 
     List<Post> result = postService.getAllPostsByTag(tag);
 
     assertEquals(posts, result);
-    verify(postRepository, times(1)).findAllByTag(tag);
+    verify(postRepository, times(1)).findAll(any(Specification.class));
   }
 
 }
