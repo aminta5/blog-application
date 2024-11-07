@@ -3,8 +3,10 @@ package com.sc.demo.blogapplication.service;
 import com.sc.demo.blogapplication.dto.PostDTO;
 import com.sc.demo.blogapplication.model.Post;
 import com.sc.demo.blogapplication.repository.PostRepository;
+import com.sc.demo.blogapplication.specification.PostSpecification;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -43,7 +45,7 @@ public class PostService {
   public Optional<Post> addTagToPost(long id, String tag) {
     return postRepository.findById(id).map(post -> {
       post.getTags().add(tag);
-      return post;
+      return postRepository.save(post);
     });
   }
 
@@ -51,11 +53,12 @@ public class PostService {
   public Optional<Post> removeTagFromPost(long id, String tag) {
     return postRepository.findById(id).map(post -> {
       post.getTags().remove(tag);
-      return post;
+      return postRepository.save(post);
     });
   }
 
   public List<Post> getAllPostsByTag(String tag) {
-    return postRepository.findAllByTag(tag);
+    Specification<Post> tagSpec = PostSpecification.hasTag(tag);
+    return postRepository.findAll(tagSpec);
   }
 }
