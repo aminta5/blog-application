@@ -1,5 +1,8 @@
 package com.sc.demo.blogapplication.dto;
 
-public record PostDTO(String title, String content) {
+import jakarta.validation.constraints.NotEmpty;
+
+public record PostDTO(@NotEmpty(message = "Title cannot be empty")String title,
+                      @NotEmpty(message = "Content cannot be empty")String content) {
 
 }
