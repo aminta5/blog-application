@@ -3,6 +3,8 @@ package com.sc.demo.blogapplication.service;
 import com.sc.demo.blogapplication.dto.UserDTO;
 import com.sc.demo.blogapplication.model.BlogUser;
 import com.sc.demo.blogapplication.repository.UserRepository;
+import java.util.Optional;
+import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -24,6 +26,10 @@ public class UserService {
 
   public BlogUser getUserByUsername(String username) {
     return userRepository.findByUsername(username);
+  }
+
+  public Optional<BlogUser> getUserById(UUID id) {
+    return userRepository.findById(id);
   }
 
   public BlogUser updateUser(String username, UserDTO userDto) {

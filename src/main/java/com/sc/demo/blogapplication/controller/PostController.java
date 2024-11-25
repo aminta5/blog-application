@@ -6,6 +6,7 @@ import com.sc.demo.blogapplication.service.PostService;
 import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
@@ -28,13 +29,9 @@ public class PostController {
   }
 
   @PostMapping
-  public ResponseEntity<Post> createPost(@Valid @RequestBody PostDTO postDto) {
+  public ResponseEntity<PostDTO> createPost(@Valid @RequestBody PostDTO postDto) {
 
-    Post post = Post.builder()
-        .title(postDto.title())
-        .content(postDto.content())
-        .build();
-    return ResponseEntity.ok(postService.createPost(post));
+    return ResponseEntity.ok(postService.createPost(postDto));
   }
 
   @GetMapping
@@ -43,14 +40,14 @@ public class PostController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<Post> updatePost(@PathVariable Long id,
+  public ResponseEntity<Post> updatePost(@PathVariable UUID id,
       @Valid @RequestBody PostDTO postDTO) {
     Optional<Post> updatedPost = postService.updatePost(id, postDTO);
     return updatedPost.map(ResponseEntity::ok).orElse(ResponseEntity.notFound().build());
   }
 
   @PatchMapping("/{id}/tags")
-  public ResponseEntity<Post> addOrRemoveTag(@PathVariable Long id, @RequestParam String tag,
+  public ResponseEntity<Post> addOrRemoveTag(@PathVariable UUID id, @RequestParam String tag,
       @RequestParam boolean add) {
     Optional<Post> updatedPost =
         add ? postService.addTagToPost(id, tag) : postService.removeTagFromPost(id, tag);

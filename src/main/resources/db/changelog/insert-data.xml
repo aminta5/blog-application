@@ -7,42 +7,50 @@
 
   <changeSet id="1" author="Filip">
     <insert tableName="posts">
-      <column name="id" value="1"/>
+      <column name="id" type="VARBINARY(16)" valueComputed="UNHEX(REPLACE('176e2657-6f32-49fd-b945-3ee2ec4eb4c8', '-', ''))"/>
       <column name="title" value="First Blog Post"/>
       <column name="content" value="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."/>
+      <column name="user_id" type="VARBINARY(16)" valueComputed="UNHEX(REPLACE('2980f011-4a6c-4b1d-af94-e44632716e7e', '-', ''))"/>
     </insert>
     <insert tableName="posts">
-      <column name="id" value="2"/>
+      <column name="id" type="VARBINARY(16)" valueComputed="UNHEX(REPLACE('f7bbc0b8-2e34-4de9-a0f1-5fabb60d7427', '-', ''))"/>
       <column name="title" value="Second Blog Post"/>
       <column name="content" value="Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"/>
+      <column name="user_id" type="VARBINARY(16)" valueComputed="UNHEX(REPLACE('2980f011-4a6c-4b1d-af94-e44632716e7e', '-', ''))"/>
     </insert>
     <insert tableName="posts">
-      <column name="id" value="3"/>
+      <column name="id" type="VARBINARY(16)" valueComputed="UNHEX(REPLACE('31dd2d84-5882-42f0-a002-2621bf67ee7d', '-', ''))"/>
       <column name="title" value="Third Blog Post"/>
       <column name="content" value="Doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"/>
+      <column name="user_id" type="VARBINARY(16)" valueComputed="UNHEX(REPLACE('b8ad4876-27a4-431b-bdb1-e7752a63daf9', '-', ''))"/>
     </insert>
     <insert tableName="posts">
-      <column name="id" value="4"/>
+      <column name="id" type="VARBINARY(16)" valueComputed="UNHEX(REPLACE('159c7b0d-9a80-4b8a-80fb-7a9e26a77a7e', '-', ''))"/>
       <column name="title" value="Forth Blog Post"/>
       <column name="content" value="Perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt. Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem. Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?"/>
+      <column name="user_id" type="VARBINARY(16)" valueComputed="UNHEX(REPLACE('85128f11-4f63-4e1a-b6d4-7e8a4e79269a', '-', ''))"/>
     </insert>
     <insert tableName="users">
-      <column name="username" value="user1"/>
+      <column name="id" type="VARBINARY(16)" valueComputed="UNHEX(REPLACE('2980f011-4a6c-4b1d-af94-e44632716e7e', '-', ''))"/>
+      <column name="email" value="user1"/>
       <column name="password" value="password"/>
       <column name="display_name" value="Superman"/>
     </insert>
     <insert tableName="users">
-      <column name="username" value="user2"/>
+      <column name="id" type="VARBINARY(16)" valueComputed="UNHEX(REPLACE('b8ad4876-27a4-431b-bdb1-e7752a63daf9', '-', ''))"/>
+      <column name="email" value="user2"/>
       <column name="password" value="password2"/>
       <column name="display_name" value="Hero"/>
     </insert>
     <insert tableName="users">
-      <column name="username" value="user3"/>
+      <column name="id" type="VARBINARY(16)" valueComputed="UNHEX(REPLACE('85128f11-4f63-4e1a-b6d4-7e8a4e79269a', '-', ''))"/>
+      <column name="email" value="user3"/>
       <column name="password" value="password3"/>
       <column name="display_name" value="Villain"/>
     </insert>
     <insert tableName="users">
-      <column name="username" value="user4"/>
+      <column name="id" type="VARBINARY(16)" valueComputed="UNHEX(REPLACE('f766fa8a-3ce5-4c01-b996-981265bf7474', '-', ''))"/>
+      <column name="email" value="user4"/>
       <column name="password" value="password4"/>
       <column name="display_name" value="Batman"/>
     </insert>
