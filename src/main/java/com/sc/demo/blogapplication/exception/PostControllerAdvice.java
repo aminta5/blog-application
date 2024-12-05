@@ -2,6 +2,7 @@ package com.sc.demo.blogapplication.exception;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -29,4 +30,9 @@ public class PostControllerAdvice {
     return new ResponseEntity<>(text, HttpStatus.BAD_REQUEST);
   }
 
+  @ExceptionHandler(DataIntegrityViolationException.class)
+  public ResponseEntity<String> handleValidationException(DataIntegrityViolationException ex) {
+
+    return new ResponseEntity<>(ex.getCause().getCause().getMessage(), HttpStatus.BAD_REQUEST);
+  }
 }

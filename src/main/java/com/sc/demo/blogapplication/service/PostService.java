@@ -24,19 +24,20 @@ public class PostService {
     this.userRepository = userRepository;
   }
 
-  public PostDTO createPost(PostDTO postDto) {
+  public Post createPost(PostDTO postDTO) {
 
-    BlogUser user = userRepository.findById(postDto.userId()).orElseThrow(() -> new RuntimeException(
-        "User not found"));
+    BlogUser user = userRepository.findById(postDTO.userId())
+        .orElseThrow(() -> new RuntimeException(
+            "User not found"));
     Post post = Post.builder()
-        .title(postDto.title())
-        .content(postDto.content())
+        .title(postDTO.title())
+        .content(postDTO.content())
         .user(user)
         .build();
 
-    postRepository.save(post);
+    return postRepository.save(post);
 
-    return postDto;
+    // return postDTO;
   }
 
   public List<PostDTO> getAllBlogPosts() {
@@ -47,11 +48,10 @@ public class PostService {
     }).toList();
   }
 
- // public List<PostDTO>
 
-
-  public Optional<Post> updatePost(UUID id, PostDTO updatedPost) {
+  public Optional<Post> updatePost(UUID id, PostDTO updatedPost, String username) {
     return postRepository.findById(id)
+        .filter(post -> post.getUser().getUsername().equals(username))
         .map(post -> {
           post.setTitle(updatedPost.title());
           post.setContent(updatedPost.content());
@@ -78,5 +78,14 @@ public class PostService {
   public List<Post> getAllPostsByTag(String tag) {
     Specification<Post> tagSpec = PostSpecification.hasTag(tag);
     return postRepository.findAll(tagSpec);
+  }
+
+  public boolean deletePost(UUID postId, String username) {
+    return postRepository.findById(postId)
+        .filter(post -> post.getUser().getUsername().equals(username))
+        .map(post -> {
+          postRepository.delete(post);
+          return true;
+        }).orElse(false);
   }
 }

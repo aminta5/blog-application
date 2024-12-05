@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -50,6 +51,7 @@ public class BlogUser {
   private Instant updatedAt;
 
   @NotEmpty
+  @Email(message = "Username should be a valid email")
   @Column(unique = true, nullable = false, name = "email")
   private String username;
 

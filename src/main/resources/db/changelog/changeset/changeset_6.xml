@@ -5,7 +5,7 @@
   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
 
-  <changeSet id="7" author="Filip Nedelkovski">
+  <changeSet id="6" author="Filip Nedelkovski">
     <addColumn tableName="posts">
       <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
         <constraints nullable="false"/>

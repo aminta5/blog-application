@@ -26,3 +26,6 @@ The current version (1.0.0) provides the following features:
 
 - **Java 17**: Ensure that Java 17 is installed on your system.
 - **Gradle**: Gradle should be installed or you can use the Gradle wrapper included in the project.
+
+# Open API docs for exposed REST endpoints
+``http://localhost:8080/swagger-ui/index.html`` 

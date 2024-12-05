@@ -1,0 +1,23 @@
+<databaseChangeLog
+  xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.4.xsd">
+
+  <changeSet id="8" author="Filip Nedelkovski">
+    <createTable tableName="post_tags">
+      <column name="post_id" type="BINARY(16)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="tags" type="VARCHAR(255)">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <addForeignKeyConstraint baseTableName="post_tags"
+      baseColumnNames="post_id"
+      referencedTableName="posts"
+      referencedColumnNames="id"
+      constraintName="fk_post_tags_post"/>
+  </changeSet>
+
+</databaseChangeLog>

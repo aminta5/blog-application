@@ -33,25 +33,25 @@
     <insert tableName="users">
       <column name="id" type="VARBINARY(16)" valueComputed="UNHEX(REPLACE('2980f011-4a6c-4b1d-af94-e44632716e7e', '-', ''))"/>
       <column name="email" value="user1"/>
-      <column name="password" value="password"/>
+      <column name="password" value="$2a$10$vi1sqmj14T5zstJV.CwOEuQaxK3wRZEuUKI96sO8LNnKXL/qIyGLy"/>
       <column name="display_name" value="Superman"/>
     </insert>
     <insert tableName="users">
       <column name="id" type="VARBINARY(16)" valueComputed="UNHEX(REPLACE('b8ad4876-27a4-431b-bdb1-e7752a63daf9', '-', ''))"/>
       <column name="email" value="user2"/>
-      <column name="password" value="password2"/>
+      <column name="password" value="$2a$10$O7zyroG5FW4OX9qi2pCMD.Apb/noNarMQERSBCdql4vcCqKp.Xmqy"/>
       <column name="display_name" value="Hero"/>
     </insert>
     <insert tableName="users">
       <column name="id" type="VARBINARY(16)" valueComputed="UNHEX(REPLACE('85128f11-4f63-4e1a-b6d4-7e8a4e79269a', '-', ''))"/>
       <column name="email" value="user3"/>
-      <column name="password" value="password3"/>
+      <column name="password" value="$2a$10$ilGFa2WVWiELReezvdCsKeBkGrUsT5IHRu.NWseIhmn1BFJ2itz1y"/>
       <column name="display_name" value="Villain"/>
     </insert>
     <insert tableName="users">
       <column name="id" type="VARBINARY(16)" valueComputed="UNHEX(REPLACE('f766fa8a-3ce5-4c01-b996-981265bf7474', '-', ''))"/>
       <column name="email" value="user4"/>
-      <column name="password" value="password4"/>
+      <column name="password" value="$2a$10$36k/hXingzI52wL38u9B1ePlwKU6q51xDtXEjLvP0MYqmtUf0YIXK"/>
       <column name="display_name" value="Batman"/>
     </insert>
   </changeSet>

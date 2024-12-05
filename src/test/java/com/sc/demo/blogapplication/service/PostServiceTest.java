@@ -2,6 +2,7 @@ package com.sc.demo.blogapplication.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.never;
@@ -10,10 +11,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.sc.demo.blogapplication.dto.PostDTO;
+import com.sc.demo.blogapplication.model.BlogUser;
 import com.sc.demo.blogapplication.model.Post;
 import com.sc.demo.blogapplication.repository.PostRepository;
+import com.sc.demo.blogapplication.repository.UserRepository;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,24 +31,46 @@ class PostServiceTest {
   @Mock
   private PostRepository postRepository;
 
+  @Mock
+  private UserRepository userRepository;
+
   @InjectMocks
   private PostService postService;
 
   @Test
   void createPostSuccessfully() {
     Post post = new Post();
-    when(postRepository.save(post)).thenReturn(post);
+    BlogUser user = new BlogUser();
+    PostDTO postDTO = new PostDTO("title", "content", UUID.randomUUID());
+    when(postRepository.save(any(Post.class))).thenReturn(post);
+    when(userRepository.findById(postDTO.userId())).thenReturn(Optional.of(user));
 
-    Post result = postService.createPost(post);
+    Post result = postService.createPost(postDTO);
 
     assertEquals(post, result);
-    verify(postRepository, times(1)).save(post);
+    verify(postRepository, times(1)).save(any(Post.class));
+  }
+
+  @Test
+  void createPostUserNotFound() {
+    PostDTO postDTO = new PostDTO("title", "content", UUID.randomUUID());
+    when(userRepository.findById(postDTO.userId())).thenReturn(Optional.empty());
+
+    Exception exception = assertThrows(RuntimeException.class, () -> postService.createPost(postDTO));
+
+    assertEquals("User not found", exception.getMessage());
+    verify(postRepository, never()).save(any(Post.class));
   }
 
   @Test
   void getAllBlogPostsSuccessfully() {
-    List<Post> posts = List.of(Post.builder().title("title").content("content").build(),
-        Post.builder().title("title1").content("content1").build());
+    //create two BlogUser objects
+    BlogUser user1 = new BlogUser();
+    user1.setUsername("user1");
+    BlogUser user2 = new BlogUser();
+    user2.setUsername("user2");
+    List<Post> posts = List.of(Post.builder().title("title").content("content").user(user1).build(),
+        Post.builder().title("title1").content("content1").user(user2).build());
     when(postRepository.findAll()).thenReturn(posts);
 
     List<PostDTO> result = postService.getAllBlogPosts();
@@ -56,13 +82,16 @@ class PostServiceTest {
 
   @Test
   void updatePostSuccessfully() {
-    long id = 1L;
-    PostDTO updatedPost = new PostDTO("New Title", "New Content");
+    UUID id = UUID.randomUUID();
+    PostDTO updatedPost = new PostDTO("New Title", "New Content", UUID.randomUUID());
     Post post = new Post();
+    BlogUser user = new BlogUser();
+    user.setUsername("correctUser");
+    post.setUser(user);
     when(postRepository.findById(id)).thenReturn(Optional.of(post));
     when(postRepository.save(post)).thenReturn(post);
 
-    Optional<Post> result = postService.updatePost(id, updatedPost);
+    Optional<Post> result = postService.updatePost(id, updatedPost, "correctUser");
 
     assertTrue(result.isPresent());
     assertEquals(updatedPost.title(), result.get().getTitle());
@@ -72,12 +101,29 @@ class PostServiceTest {
   }
 
   @Test
-  void updatePostNotFound() {
-    long id = 1L;
-    PostDTO updatedPost = new PostDTO("New Title", "New Content");
-    when(postRepository.findById(id)).thenReturn(Optional.empty());
+  void updatePostUserMismatch() {
+    UUID id = UUID.randomUUID();
+    PostDTO updatedPost = new PostDTO("New Title", "New Content", UUID.randomUUID());
+    Post post = new Post();
+    BlogUser user = new BlogUser();
+    user.setUsername("differentUser");
+    post.setUser(user);
+    when(postRepository.findById(id)).thenReturn(Optional.of(post));
 
-    Optional<Post> result = postService.updatePost(id, updatedPost);
+    Optional<Post> result = postService.updatePost(id, updatedPost, "username");
+
+    assertFalse(result.isPresent());
+    verify(postRepository, times(1)).findById(id);
+    verify(postRepository, never()).save(any(Post.class));
+  }
+
+  @Test
+  void updatePostNotFound() {
+    UUID id = UUID.randomUUID();
+    PostDTO updatedPost = new PostDTO("New Title", "New Content", UUID.randomUUID());
+    when(postRepository.findById(any(UUID.class))).thenReturn(Optional.empty());
+
+    Optional<Post> result = postService.updatePost(id, updatedPost, "randomUsername");
 
     assertFalse(result.isPresent());
     verify(postRepository, times(1)).findById(id);
@@ -86,7 +132,7 @@ class PostServiceTest {
 
   @Test
   void addTagToPostSuccessfully() {
-    long id = 1L;
+    UUID id = UUID.randomUUID();
     String tag = "tag";
     Post post = new Post();
     when(postRepository.findById(id)).thenReturn(Optional.of(post));
@@ -101,7 +147,7 @@ class PostServiceTest {
 
   @Test
   void addTagToPostNotFound() {
-    long id = 1L;
+    UUID id = UUID.randomUUID();
     String tag = "tag";
     when(postRepository.findById(id)).thenReturn(Optional.empty());
 
@@ -113,7 +159,7 @@ class PostServiceTest {
 
   @Test
   void removeTagFromPostSuccessfully() {
-    long id = 1L;
+    UUID id = UUID.randomUUID();
     String tag = "tag";
     Post post = new Post();
     post.getTags().add(tag);
@@ -129,7 +175,7 @@ class PostServiceTest {
 
   @Test
   void removeTagFromPostNotFound() {
-    long id = 1L;
+    UUID id = UUID.randomUUID();
     String tag = "tag";
     when(postRepository.findById(id)).thenReturn(Optional.empty());
 
