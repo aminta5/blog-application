@@ -1,18 +1,19 @@
 package com.sc.demo.blogapplication.model;
 
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.Lob;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,15 +27,16 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "posts")
-public class Post {
+@Table(name = "users")
+public class BlogUser {
 
   @Id
-  @Column(columnDefinition = "BINARY(16)",
+  @GeneratedValue
+  @Column(
+      columnDefinition = "BINARY(16)",
       updatable = false,
       nullable = false,
       unique = true)
-  @GeneratedValue
   private UUID id;
 
   @CreationTimestamp
@@ -48,17 +50,20 @@ public class Post {
   @UpdateTimestamp
   private Instant updatedAt;
 
-  @NotEmpty(message = "Post title cannot be empty")
-  private String title;
-  @Lob
-  @NotEmpty(message = "Post content cannot be empty")
-  private String content;
+  @NotEmpty
+  @Email(message = "Username should be a valid email")
+  @Column(unique = true, nullable = false, name = "email")
+  private String username;
 
-  @ElementCollection
-  @Builder.Default
-  private Set<String> tags = new HashSet<>();
+  @Size(min = 8, message = "min 8 characters")
+  @Pattern(regexp = "^(?=.*\\d)(?=.*[a-zA-Z]).{8,}$", message = "password must contain at least one letter and one number")
+  private String password;
 
-  @ManyToOne
-  @JoinColumn(name = "user_id", nullable = false)
-  private BlogUser user;
+  @NotEmpty
+  @Column(name = "display_name")
+  private String displayName;
+
+  @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Post> posts;
+
 }
